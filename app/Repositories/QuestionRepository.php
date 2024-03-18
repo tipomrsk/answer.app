@@ -22,12 +22,28 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
                 'message' => 'Question created successfully',
                 'status' => '1',
             ];
+
         } catch (\Exception $e) {
 
             Log::error($e->getMessage());
 
             return [
                 'message' => 'Question not created',
+                'status' => '0',
+            ];
+        }
+    }
+
+    public function getById(int $id)
+    {
+        try {
+            return $this->model->select('id', 'form_id', 'question', 'type', 'options')->where('form_id', $id)->get();
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return [
+                'message' => 'Question not found',
                 'status' => '0',
             ];
         }

@@ -11,7 +11,7 @@ class QuestionnaireService
         protected QuestionnaireRepositoryInterface $questionnaireRepositoryInterface
     ){}
 
-    public function createQuestionnaire($id, $questionnaire)
+    public function createQuestionnaire($id, $questionnaire): array
     {
 
         try {
@@ -25,7 +25,16 @@ class QuestionnaireService
                 ];
             }
 
-            $this->questionnaireRepositoryInterface->create($massArray);
+            $persistReturn = $this->questionnaireRepositoryInterface->create($massArray);
+
+            if ($persistReturn['status'] != 1) {
+                throw new \Exception($persistReturn['message']);
+            }
+
+            return [
+                'message' => 'Questionnaire created',
+                'status' => '1',
+            ];
 
         } catch (\Exception $e) {
             return [
@@ -33,8 +42,13 @@ class QuestionnaireService
                 'status' => '0',
             ];
         }
-
-
     }
+
+    public function getById(int $id)
+    {
+        return $this->questionnaireRepositoryInterface->getById($id);
+    }
+
+
 
 }

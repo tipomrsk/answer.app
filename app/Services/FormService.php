@@ -43,13 +43,17 @@ class FormService
     {
         try {
             $showForm = $this->formRepositoryInterface->show($uuid);
+            $showQuestionnaire = $this->questionnaireService->getById($showForm['data']->id);
 
             if ($showForm['status'] != 1) {
                 throw new \Exception($showForm['message']);
             }
 
             return response()->json([
-                'data' => $showForm['data'],
+                'data' => [
+                    $showForm['data'],
+                    'questionnaire' => $showQuestionnaire,
+                ],
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {

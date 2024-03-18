@@ -38,7 +38,7 @@ class FormRepository implements FormRepositoryInterface
     {
         try {
             return [
-                'data' => $this->model->where('uuid', $uuid)->firstOrFail(),
+                'data' => $this->model->select('id', 'uuid', 'name', 'description', 'style')->where('uuid', $uuid)->firstOrFail(),
                 'status' => '1',
             ];
 
