@@ -18,8 +18,8 @@ class QuestionFactory extends Factory
     {
         return [
             'question' => $this->faker->sentence(),
-            'type' => json_encode($this->faker->randomElement(['text', 'textarea', 'radio', 'checkbox', 'select', 'email', 'number', 'date', 'tel', 'url'])),
-            'options' => json_encode($this->faker->randomElements(['Option 1', 'Option 2', 'Option 3'], 3)),
+            'type' => 'string', //json_encode($this->faker->randomElement(['text', 'textarea', 'radio', 'checkbox', 'select', 'email', 'number', 'date', 'tel', 'url'])),
+            'options' => ''//json_encode($this->faker->randomElements(['Option 1', 'Option 2', 'Option 3'], 3)),
         ];
     }
 }
