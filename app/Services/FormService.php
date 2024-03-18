@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Data\FormData;
 use App\Repositories\Interfaces\FormRepositoryInterface;
 
 class FormService
@@ -11,9 +12,10 @@ class FormService
         protected FormRepositoryInterface $formRepositoryInterface
     ){}
 
-    public function create($form)
+    public function create(FormData $form)
     {
-        return $this->formRepositoryInterface->create($form);
+
+        return $this->formRepositoryInterface->create($form->exceptQuestionnaire());
     }
 
 

@@ -14,7 +14,12 @@ class FormRepository implements FormRepositoryInterface
 
     public function create($form)
     {
-        dd($form);
+        try {
+            return $this->model->create($form->toArray());
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            throw new \Exception($e->getMessage());
+        }
     }
 
 }

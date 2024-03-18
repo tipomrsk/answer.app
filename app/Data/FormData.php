@@ -2,7 +2,7 @@
 
 namespace App\Data;
 
-use App\Models\Question;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Attributes\Validation\{Url, Json, Uuid};
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
@@ -14,6 +14,8 @@ class FormData extends Data
         #[Uuid]
         public string|Optional $uuid,
 
+        public int $user_id,
+
         public string $name,
 
         public string $description,
@@ -24,8 +26,13 @@ class FormData extends Data
         #[Url]
         public string|Optional $webhook_url,
 
-        public array|Question $questionnaire
+        public array|Optional $questionnaire
 
     ){}
+
+    public function exceptQuestionnaire(): Collection
+    {
+        return collect($this->toArray())->except('questionnaire');
+    }
 
 }
