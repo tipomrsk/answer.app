@@ -6,4 +6,6 @@ interface FormRepositoryInterface
 {
 
     public function create($form);
+
+    public function show(string $uuid);
 }

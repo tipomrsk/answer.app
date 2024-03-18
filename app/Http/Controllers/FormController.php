@@ -17,4 +17,9 @@ class FormController extends Controller
     {
         return $this->formService->create($formData);
     }
+
+    public function show($uuid)
+    {
+        return $this->formService->show($uuid);
+    }
 }

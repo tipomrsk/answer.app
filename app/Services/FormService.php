@@ -14,8 +14,12 @@ class FormService
 
     public function create(FormData $form)
     {
-
         return $this->formRepositoryInterface->create($form->exceptQuestionnaire());
+    }
+
+    public function show($uuid)
+    {
+        return $this->formRepositoryInterface->show($uuid);
     }
 
 
