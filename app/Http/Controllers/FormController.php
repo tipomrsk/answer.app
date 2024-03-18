@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\FormData;
 use App\Services\FormService;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,8 @@ class FormController extends Controller
         protected FormService $formService
     ){}
 
-    public function create()
+    public function create(FormData $formData)
     {
-
-        return $this->formService->create();
-
+        return $this->formService->create($formData);
     }
 }

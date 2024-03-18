@@ -11,9 +11,9 @@ class FormService
         protected FormRepositoryInterface $formRepositoryInterface
     ){}
 
-    public function create()
+    public function create($form)
     {
-        return $this->formRepositoryInterface->create();
+        return $this->formRepositoryInterface->create($form);
     }
 
 

@@ -12,9 +12,9 @@ class FormRepository implements FormRepositoryInterface
         protected Form $model
     ){}
 
-    public function create()
+    public function create($form)
     {
-        return 'create';
+        dd($form);
     }
 
 }
