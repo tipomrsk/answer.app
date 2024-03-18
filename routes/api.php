@@ -19,6 +19,8 @@ Route::prefix('/form')->group(function () {
 
 Route::prefix('/answer')->group(function () {
     Route::post('/create', [AnswerController::class, 'create']);
+    Route::get('/show/{form-uuid}', [AnswerController::class, 'show']);
+
 });
 
 

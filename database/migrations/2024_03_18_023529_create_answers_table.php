@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
+            $table->string('hash_identifier');
             $table->foreignId('question_id')->constrained();
             $table->foreignUuid('form_uuid');
             $table->longText('answer');

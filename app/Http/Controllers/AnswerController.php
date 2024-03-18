@@ -16,4 +16,9 @@ class AnswerController extends Controller
     {
         return $this->answerService->create($answerData);
     }
+
+    public function show(string $formUuid)
+    {
+        return $this->answerService->show($formUuid);
+    }
 }

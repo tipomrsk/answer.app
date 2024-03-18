@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Ramsey\Uuid\Uuid;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,8 +24,13 @@ class DatabaseSeeder extends Seeder
         $form->each(function (Form $f) {
             $question = Question::factory()->count(10)->create(['form_id' => $f->id]);
 
-            $question->each(function (Question $q) use ($f) {
-                Answer::factory()->count(10)->create(['question_id' => $q->id, 'form_uuid' => $f->uuid]);
+            $hash_identifier = Uuid::uuid4();
+            $question->each(function (Question $q) use ($f, $hash_identifier) {
+                Answer::factory()->count(2)->create([
+                    'question_id' => $q->id,
+                    'form_uuid' => $f->uuid,
+                    'hash_identifier' => $hash_identifier
+                ]);
             });
         });
     }

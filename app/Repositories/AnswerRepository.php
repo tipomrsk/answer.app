@@ -14,7 +14,6 @@ class AnswerRepository implements AnswerRepositoryInterface
 
     public function create($answerData)
     {
-
         try {
             $this->model->create($answerData->toArray());
 
@@ -29,6 +28,23 @@ class AnswerRepository implements AnswerRepositoryInterface
                 'message' => $e->getMessage()
             ];
         }
+    }
 
+    public function show(string $formUuid)
+    {
+        try {
+            $showAnswer = $this->model->where('form_uuid', $formUuid)->get();
+
+            return [
+                'status' => 1,
+                'data' => $showAnswer
+            ];
+
+        }catch (\Exception $e) {
+            return [
+                'status' => 0,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 }
