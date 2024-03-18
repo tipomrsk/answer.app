@@ -2,12 +2,8 @@
 
 namespace App\Providers;
 
-use App\Repositories\{
-    FormRepository
-};
-use App\Repositories\Interfaces\{
-    FormRepositoryInterface
-};
+use App\Repositories\{FormRepository, QuestionRepository};
+use App\Repositories\Interfaces\{FormRepositoryInterface, QuestionnaireRepositoryInterface};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
             FormRepositoryInterface::class,
             FormRepository::class
         );
+
+        $this->app->bind(
+            QuestionnaireRepositoryInterface::class,
+            QuestionRepository::class);
     }
 
     /**

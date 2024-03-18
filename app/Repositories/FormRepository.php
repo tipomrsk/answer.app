@@ -5,13 +5,10 @@ namespace App\Repositories;
 use App\Models\Form;
 use App\Repositories\Interfaces\FormRepositoryInterface;
 use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class FormRepository implements FormRepositoryInterface
 {
-
     public function __construct(
         protected Form $model
     ){}
@@ -19,33 +16,33 @@ class FormRepository implements FormRepositoryInterface
     public function create($form)
     {
         try {
+            $data = $this->model->create($form->toArray());
 
-            $this->model->create($form->toArray());
-
-            return response()->json([
+            return [
+                'id' => $data->id,
                 'message' => 'Form created successfully',
-            ], Response::HTTP_CREATED);
+                'status' => '1',
+            ];
         } catch (Exception $e) {
-
             Log::error($e->getMessage());
 
-            return response()->json([
+            return [
                 'message' => 'Form not created',
-            ], Response::HTTP_BAD_REQUEST);
+                'status' => '0',
+            ];
 
         }
     }
 
-    public function show(string $uuid): JsonResponse
+    public function show(string $uuid)
     {
         try {
-
-            return response()->json([
+            return [
                 'data' => $this->model->where('uuid', $uuid)->firstOrFail(),
-            ], Response::HTTP_OK );
+                'status' => '1',
+            ];
 
         } catch (Exception $e) {
-
             Log::error($e->getMessage());
 
             return response()->json([
