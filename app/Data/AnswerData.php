@@ -9,11 +9,8 @@ class AnswerData extends Data
 
     public function __construct(
 
-        public int $question_id,
+        public string $hash_identifier,
 
-        public string $form_uuid,
-
-        public string $answer,
+        public array $answers,
     ){}
-
 }

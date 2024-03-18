@@ -12,10 +12,12 @@ class AnswerRepository implements AnswerRepositoryInterface
         protected Answer $model
     ){}
 
-    public function create($answerData)
+    public function create(array $answerData)
     {
         try {
-            $this->model->create($answerData->toArray());
+
+
+            $truco = $this->model->create($answerData);
 
             return [
                 'status' => 1,
@@ -23,6 +25,8 @@ class AnswerRepository implements AnswerRepositoryInterface
             ];
 
         }catch (\Exception $e) {
+
+            dd($e->getMessage());
             return [
                 'status' => 0,
                 'message' => $e->getMessage()

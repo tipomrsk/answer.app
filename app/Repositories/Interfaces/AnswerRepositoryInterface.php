@@ -4,7 +4,7 @@ namespace App\Repositories\Interfaces;
 
 interface AnswerRepositoryInterface
 {
-    public function create($answerData);
+    public function create(array $answerData);
 
     public function show(string $formUuid);
 

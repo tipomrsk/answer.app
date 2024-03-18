@@ -16,7 +16,16 @@ class AnswerService
     public function create($answerData): JsonResponse
     {
         try {
-            $persistAnswer = $this->answerRepositoryInterface->create($answerData);
+            foreach ($answerData->answers as $answer) {
+                $massArray[] = [
+                    'hash_identifier' => $answerData->hash_identifier,
+                    'form_uuid' => $answer['form_uuid'],
+                    'question_id' => $answer['question_id'],
+                    'answer' => $answer['answer'],
+                ];
+            }
+
+            $persistAnswer = $this->answerRepositoryInterface->create($massArray);
 
             if ($persistAnswer['status'] != 1) {
                 throw new \Exception($persistAnswer['message']);
