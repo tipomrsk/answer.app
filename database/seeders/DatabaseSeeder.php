@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
         $form->each(function (Form $f) {
             $question = Question::factory()->count(10)->create(['form_id' => $f->id]);
 
-            $question->each(function (Question $q) {
-                Answer::factory()->count(10)->create(['question_id' => $q->id, 'form_id' => $q->form_id]);
+            $question->each(function (Question $q) use ($f) {
+                Answer::factory()->count(10)->create(['question_id' => $q->id, 'form_uuid' => $f->uuid]);
             });
         });
     }

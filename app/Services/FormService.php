@@ -15,7 +15,7 @@ class FormService
         protected QuestionnaireService      $questionnaireService,
     ){}
 
-    public function create(FormData $form)
+    public function create($form)
     {
         try {
             $persistForm = $this->formRepositoryInterface->create($form);

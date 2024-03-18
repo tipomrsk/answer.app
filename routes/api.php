@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FormController;
+use App\Http\Controllers\{AnswerController, FormController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +15,8 @@ Route::get('/test', function () {
 Route::prefix('/form')->group(function () {
     Route::post('/create', [FormController::class, 'create']);
     Route::get('/show/{uuid}', [FormController::class, 'show']);
+});
+
+Route::prefix('/answer')->group(function () {
+    Route::post('/create', [AnswerController::class, 'create']);
 });
