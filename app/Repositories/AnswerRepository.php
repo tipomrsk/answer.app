@@ -16,8 +16,7 @@ class AnswerRepository implements AnswerRepositoryInterface
     {
         try {
 
-
-            $truco = $this->model->create($answerData);
+            $this->model->insert($answerData);
 
             return [
                 'status' => 1,
