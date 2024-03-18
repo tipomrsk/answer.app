@@ -42,12 +42,14 @@ class FormService
     public function show(string $uuid): JsonResponse
     {
         try {
+
             $showForm = $this->formRepositoryInterface->show($uuid);
-            $showQuestionnaire = $this->questionnaireService->getById($showForm['data']->id);
 
             if ($showForm['status'] != 1) {
                 throw new \Exception($showForm['message']);
             }
+
+            $showQuestionnaire = $this->questionnaireService->getById($showForm['data']->id);
 
             return response()->json([
                 'data' => [

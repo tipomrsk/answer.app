@@ -37,6 +37,7 @@ class FormRepository implements FormRepositoryInterface
     public function show(string $uuid)
     {
         try {
+
             return [
                 'data' => $this->model->select('id', 'uuid', 'name', 'description', 'style')->where('uuid', $uuid)->firstOrFail(),
                 'status' => '1',
@@ -45,9 +46,10 @@ class FormRepository implements FormRepositoryInterface
         } catch (Exception $e) {
             Log::error($e->getMessage());
 
-            return response()->json([
+            return [
                 'message' => 'Form not found',
-            ], Response::HTTP_NOT_FOUND);
+                'status' => '0',
+            ];
         }
     }
 
