@@ -18,10 +18,6 @@ class FormService
     public function create(FormData $form)
     {
         try {
-
-
-
-
             $persistForm = $this->formRepositoryInterface->create($form);
 
             if ($persistForm['status'] != 1) {
@@ -52,7 +48,7 @@ class FormService
                 throw new \Exception($showForm['message']);
             }
 
-            return repsonse()->json([
+            return response()->json([
                 'data' => $showForm['data'],
             ], Response::HTTP_OK);
 
