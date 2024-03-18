@@ -11,6 +11,8 @@ class AnswerData extends Data
 
         public string $hash_identifier,
 
+        public string $form_uuid,
+
         public array $answers,
     ){}
 }

@@ -19,7 +19,7 @@ class AnswerService
             foreach ($answerData->answers as $answer) {
                 $massArray[] = [
                     'hash_identifier' => $answerData->hash_identifier,
-                    'form_uuid' => $answer['form_uuid'],
+                    'form_uuid' => $answerData->form_uuid,
                     'question_id' => $answer['question_id'],
                     'answer' => $answer['answer'],
                 ];
@@ -45,7 +45,6 @@ class AnswerService
     public function show(string $formUuid): JsonResponse
     {
         try {
-
             $showAnswer = $this->answerRepositoryInterface->show($formUuid);
 
             if ($showAnswer['status'] != 1) {

@@ -25,7 +25,10 @@ class FormService
 
             $this->questionnaireService->createQuestionnaire($persistForm['id'], $form->questionnaire);
 
-            return $form;
+            return response()->json([
+                'message' => 'Form created successfully',
+                'uuid' => $persistForm['uuid'],
+            ], Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
             return response()->json([

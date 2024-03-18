@@ -20,6 +20,7 @@ class FormRepository implements FormRepositoryInterface
 
             return [
                 'id' => $data->id,
+                'uuid' => $data->uuid,
                 'message' => 'Form created successfully',
                 'status' => '1',
             ];
