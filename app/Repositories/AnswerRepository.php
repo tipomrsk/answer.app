@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Answer;
 use App\Repositories\Interfaces\AnswerRepositoryInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AnswerRepository implements AnswerRepositoryInterface
 {
@@ -25,10 +26,8 @@ class AnswerRepository implements AnswerRepositoryInterface
             ];
 
         }catch (\Exception $e) {
-            return [
-                'status' => 0,
-                'message' => $e->getMessage()
-            ];
+            Log::error($e->getMessage());
+            throw new \Exception('Error to create answer');
         }
     }
 
@@ -51,7 +50,7 @@ class AnswerRepository implements AnswerRepositoryInterface
             ->toArray();
 
             foreach ($showAnswer as $answer) {
-                $returnArray[$answer['hash_identifier']]['questions'][] = [
+                $returnArray[$answer['hash_identifier']]["Question {$answer['question_number']}"][] = [
                     'question_number' => $answer['question_number'],
                     'question' => $answer['question'],
                     'type' => $answer['type'],
@@ -66,10 +65,9 @@ class AnswerRepository implements AnswerRepositoryInterface
             ];
 
         }catch (\Exception $e) {
-            return [
-                'status' => 0,
-                'message' => $e->getMessage()
-            ];
+            Log::error($e->getMessage());
+
+            throw new \Exception('Error to get answers');
         }
     }
 }

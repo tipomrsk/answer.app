@@ -27,10 +27,7 @@ class FormRepository implements FormRepositoryInterface
         } catch (Exception $e) {
             Log::error($e->getMessage());
 
-            return [
-                'message' => 'Form not created',
-                'status' => '0',
-            ];
+            throw new Exception('Error to create form');
 
         }
     }
@@ -47,10 +44,7 @@ class FormRepository implements FormRepositoryInterface
         } catch (Exception $e) {
             Log::error($e->getMessage());
 
-            return [
-                'message' => 'Form not found',
-                'status' => '0',
-            ];
+            throw new Exception('Form not found');
         }
     }
 

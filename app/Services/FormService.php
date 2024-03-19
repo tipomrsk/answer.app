@@ -14,6 +14,12 @@ class FormService
         protected QuestionnaireService      $questionnaireService,
     ){}
 
+    /**
+     * Cria o formulário e o questionário
+     *
+     * @param $form
+     * @return JsonResponse
+     */
     public function create($form)
     {
         try {
@@ -38,6 +44,8 @@ class FormService
     }
 
     /**
+     * Retorna o forumlário e o questionário
+     *
      * @param string $uuid
      * @return JsonResponse
      */
@@ -62,8 +70,8 @@ class FormService
 
         } catch (\Exception $e) {
             return response()->json([
-                    'message' => $e->getMessage(),
-                ], Response::HTTP_BAD_REQUEST);
+                'message' => $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 

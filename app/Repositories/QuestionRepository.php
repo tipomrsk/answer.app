@@ -27,10 +27,7 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
 
             Log::error($e->getMessage());
 
-            return [
-                'message' => 'Question not created',
-                'status' => '0',
-            ];
+            throw new \Exception('Error to create question');
         }
     }
 
@@ -42,10 +39,7 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
-            return [
-                'message' => 'Question not found',
-                'status' => '0',
-            ];
+            throw new \Exception('Error to get questionnaire');
         }
     }
 }

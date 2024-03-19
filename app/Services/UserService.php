@@ -17,10 +17,6 @@ class UserService
         try {
             $createUser = $this->userInterfaceRepository->create($userData->toArray());
 
-            if ($createUser['status'] != 1) {
-                throw new \Exception($createUser['message']);
-            }
-
             return response()->json([
                 'message' => 'User created successfully',
                 'uuid' => $createUser['uuid']
@@ -36,15 +32,8 @@ class UserService
     public function show(string $uuid)
     {
         try {
-            $user = $this->userInterfaceRepository->show($uuid);
-
-            if ($user['status'] != 1) {
-                throw new \Exception($user['message']);
-            }
-
             return response()->json([
-                'message' => 'User found',
-                'data' => $user['data']
+                'data' => $this->userInterfaceRepository->show($uuid)
             ], Response::HTTP_OK);
         }
         catch (\Exception $e) {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\QuestionnaireRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class QuestionnaireService
 {
@@ -25,11 +26,7 @@ class QuestionnaireService
                 ];
             }
 
-            $persistReturn = $this->questionnaireRepositoryInterface->create($massArray);
-
-            if ($persistReturn['status'] != 1) {
-                throw new \Exception($persistReturn['message']);
-            }
+            $this->questionnaireRepositoryInterface->create($massArray);
 
             return [
                 'message' => 'Questionnaire created',
@@ -37,10 +34,9 @@ class QuestionnaireService
             ];
 
         } catch (\Exception $e) {
-            return [
-                'message' => 'Questionnaire not created',
-                'status' => '0',
-            ];
+            Log::error($e->getMessage());
+
+            throw new \Exception('Error to create questionnaire');
         }
     }
 

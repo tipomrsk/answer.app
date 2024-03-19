@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\AnswerRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -10,12 +11,23 @@ class AnswerService
 {
 
     public function __construct(
-        protected AnswerRepositoryInterface $answerRepositoryInterface
+        protected AnswerRepositoryInterface $answerRepositoryInterface,
+        protected UserRepositoryInterface   $userRepositoryInterface
     ){}
 
+
+    /**
+     * Cria a reposta no formulário
+     *
+     * @param $answerData
+     * @return JsonResponse
+     */
     public function create($answerData): JsonResponse
     {
         try {
+
+            $this->checkLimit($answerData->form_uuid);
+
             foreach ($answerData->answers as $answer) {
                 $massArray[] = [
                     'hash_identifier' => $answerData->hash_identifier,
@@ -25,11 +37,7 @@ class AnswerService
                 ];
             }
 
-            $persistAnswer = $this->answerRepositoryInterface->create($massArray);
-
-            if ($persistAnswer['status'] != 1) {
-                throw new \Exception($persistAnswer['message']);
-            }
+            $this->answerRepositoryInterface->create($massArray);
 
             return response()->json([
                 'message' => 'Answer created successfully'
@@ -42,6 +50,12 @@ class AnswerService
         }
     }
 
+    /**
+     * Retorna as respostas do formulário
+     *
+     * @param string $formUuid
+     * @return JsonResponse
+     */
     public function show(string $formUuid): JsonResponse
     {
         try {
@@ -59,6 +73,26 @@ class AnswerService
             return response()->json([
                 'message' => $e->getMessage(),
             ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Verifica se o usuario ainda pode receber respostas no formulário
+     *
+     * @param string $formUuid
+     * @return void
+     * @throws \Exception
+     */
+    public function checkLimit(string $formUuid): void
+    {
+        try {
+            $this->userRepositoryInterface->updateLimit($formUuid);
+
+            $this->userRepositoryInterface->checkLimit($formUuid);
+
+        }
+        catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
     }
 }
