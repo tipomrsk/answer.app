@@ -118,3 +118,21 @@ it('should return 400 when try to show a form and back return with an error', fu
         ->assertJsonCount(1);
 });
 
+it('it should list all forms by user', function () {
+
+    $this->get('/api/form/list-by-user/k2k2k2k2-2k2k-2k2k-2k2k-2k2k2k2k2k2k')
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'uuid',
+                    'name',
+                    'description',
+                    'style',
+                    'webhook_url'
+                ]
+            ]
+        ])
+        ->assertJsonCount(1);
+});
+
