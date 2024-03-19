@@ -85,9 +85,15 @@ class UserRepository implements UserRepositoryInterface
             $user->save();
         }
         catch (\Exception $e) {
+
+            $message = 'Error to update user limit';
+            if ($e->getCode() == 0) {
+                $message = 'Please, check the form_uuid';
+            }
+
             Log::error($e->getMessage());
 
-            throw new \Exception('Error to update user limit');
+            throw new \Exception($message);
         }
 
     }
