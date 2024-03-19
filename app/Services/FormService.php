@@ -55,7 +55,7 @@ class FormService
 
             return response()->json([
                 'data' => [
-                    $showForm['data'],
+                    $showForm,
                     'questionnaire' => $showQuestionnaire,
                 ],
             ], Response::HTTP_OK);

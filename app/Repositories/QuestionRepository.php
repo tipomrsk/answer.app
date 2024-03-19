@@ -44,7 +44,7 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
     public function getByUuid(string $uuid)
     {
         try {
-            return $this->model->select('id', 'form_id', 'question', 'type', 'options')->where('form_uuid', $uuid)->get();
+            return $this->model->select('id', 'question', 'type', 'options')->where('form_uuid', $uuid)->get();
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
