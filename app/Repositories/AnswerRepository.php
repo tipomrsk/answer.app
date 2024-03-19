@@ -9,11 +9,17 @@ use Illuminate\Support\Facades\Log;
 
 class AnswerRepository implements AnswerRepositoryInterface
 {
-
     public function __construct(
         protected Answer $model
     ){}
 
+    /**
+     * Cria uma nova resposta
+     *
+     * @param array $answerData
+     * @return array
+     * @throws \Exception
+     */
     public function create(array $answerData)
     {
         try {
@@ -31,6 +37,13 @@ class AnswerRepository implements AnswerRepositoryInterface
         }
     }
 
+    /**
+     * Retorna as respostas pelo uuid do formulário
+     *
+     * @param string $formUuid
+     * @return array
+     * @throws \Exception
+     */
     public function show(string $formUuid)
     {
         try {

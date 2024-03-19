@@ -13,15 +13,18 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
         protected Question $model
     ){}
 
+    /**
+     * Cria uma nova pergunta
+     *
+     * @param array $questionnaire
+     * @return string[]
+     * @throws \Exception
+     */
     public function create(array $questionnaire)
     {
         try {
-            $this->model->insert($questionnaire);
 
-            return [
-                'message' => 'Question created successfully',
-                'status' => '1',
-            ];
+            $this->model->insert($questionnaire);
 
         } catch (\Exception $e) {
 
@@ -31,6 +34,13 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
         }
     }
 
+    /**
+     * Busca as perguntas pelo id do formulário
+     *
+     * @param int $id
+     * @return mixed
+     * @throws \Exception
+     */
     public function getById(int $id)
     {
         try {

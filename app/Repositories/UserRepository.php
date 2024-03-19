@@ -13,6 +13,13 @@ class UserRepository implements UserRepositoryInterface
         protected User $model,
     ){}
 
+    /**
+     * Cria um novo usuário
+     *
+     * @param array $userData
+     * @return array
+     * @throws \Exception
+     */
     public function create(array $userData): array
     {
         try {
@@ -25,7 +32,6 @@ class UserRepository implements UserRepositoryInterface
             ];
         }
         catch (\Exception $e) {
-
             $message = 'Failed to create user';
 
             if($e->getCode() == 23000) {
@@ -35,11 +41,17 @@ class UserRepository implements UserRepositoryInterface
             Log::error($e->getMessage());
 
             throw new \Exception($message);
-
         }
 
     }
 
+    /**
+     * Retorna um usuário pelo uuid
+     *
+     * @param string $uuid
+     * @return mixed
+     * @throws \Exception
+     */
     public function show(string $uuid)
     {
         try {
@@ -51,6 +63,13 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
+    /**
+     * Atualiza o limite de formulários do usuário
+     *
+     * @param string $form_uuid
+     * @return void
+     * @throws \Exception
+     */
     public function updateLimit(string $form_uuid)
     {
         try {
@@ -58,10 +77,6 @@ class UserRepository implements UserRepositoryInterface
                 ->join('forms', 'users.id', 'forms.user_id')
                 ->where('forms.uuid', $form_uuid)
                 ->firstOrFail();
-
-            if (!$user) {
-                throw new \Exception('Error to get user limit');
-            }
 
             $user->count_limit = $user->count_limit + 1;
             $user->save();
@@ -74,6 +89,13 @@ class UserRepository implements UserRepositoryInterface
 
     }
 
+    /**
+     * Verifica se o usuário ainda pode receber respostas no formulário
+     *
+     * @param string $formUuid
+     * @return void
+     * @throws \Exception
+     */
     public function checkLimit(string $formUuid)
     {
         try {

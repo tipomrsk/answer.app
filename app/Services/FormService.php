@@ -25,15 +25,11 @@ class FormService
         try {
             $persistForm = $this->formRepositoryInterface->create($form);
 
-            if ($persistForm['status'] != 1) {
-                throw new \Exception($persistForm['message']);
-            }
-
-            $this->questionnaireService->createQuestionnaire($persistForm['id'], $form->questionnaire);
+            $this->questionnaireService->createQuestionnaire($persistForm->id, $form->questionnaire);
 
             return response()->json([
                 'message' => 'Form created successfully',
-                'uuid' => $persistForm['uuid'],
+                'uuid' => $persistForm->uuid,
             ], Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
@@ -55,11 +51,7 @@ class FormService
 
             $showForm = $this->formRepositoryInterface->show($uuid);
 
-            if ($showForm['status'] != 1) {
-                throw new \Exception($showForm['message']);
-            }
-
-            $showQuestionnaire = $this->questionnaireService->getById($showForm['data']->id);
+            $showQuestionnaire = $this->questionnaireService->getById($showForm->id);
 
             return response()->json([
                 'data' => [

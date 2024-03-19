@@ -13,17 +13,17 @@ class FormRepository implements FormRepositoryInterface
         protected Form $model
     ){}
 
+    /**
+     * Cria um novo formulário
+     *
+     * @param $form
+     * @return array
+     * @throws Exception
+     */
     public function create($form)
     {
         try {
-            $data = $this->model->create($form->toArray());
-
-            return [
-                'id' => $data->id,
-                'uuid' => $data->uuid,
-                'message' => 'Form created successfully',
-                'status' => '1',
-            ];
+            return $this->model->create($form->toArray());
         } catch (Exception $e) {
             Log::error($e->getMessage());
 
@@ -32,14 +32,17 @@ class FormRepository implements FormRepositoryInterface
         }
     }
 
+    /**
+     * Retorna um formulário pelo uuid
+     *
+     * @param string $uuid
+     * @return mixed
+     * @throws Exception
+     */
     public function show(string $uuid)
     {
         try {
-
-            return [
-                'data' => $this->model->select('id', 'uuid', 'name', 'description', 'style')->where('uuid', $uuid)->firstOrFail(),
-                'status' => '1',
-            ];
+            return $this->model->select('id', 'uuid', 'name', 'description', 'style')->where('uuid', $uuid)->firstOrFail();
 
         } catch (Exception $e) {
             Log::error($e->getMessage());

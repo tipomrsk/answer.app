@@ -34,6 +34,8 @@ class AnswerService
                     'form_uuid' => $answerData->form_uuid,
                     'question_id' => $answer['question_id'],
                     'answer' => $answer['answer'],
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
                 ];
             }
 
@@ -83,13 +85,12 @@ class AnswerService
      * @return void
      * @throws \Exception
      */
-    public function checkLimit(string $formUuid): void
+    public function checkLimit(string $formUuid)
     {
         try {
             $this->userRepositoryInterface->updateLimit($formUuid);
 
             $this->userRepositoryInterface->checkLimit($formUuid);
-
         }
         catch (\Exception $e) {
             throw new \Exception($e->getMessage());

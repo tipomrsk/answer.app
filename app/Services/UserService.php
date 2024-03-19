@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class UserService
@@ -12,7 +13,7 @@ class UserService
         protected UserRepositoryInterface $userInterfaceRepository,
     ){}
 
-    public function create($userData)
+    public function create($userData): JsonResponse
     {
         try {
             $createUser = $this->userInterfaceRepository->create($userData->toArray());
@@ -29,7 +30,7 @@ class UserService
         }
     }
 
-    public function show(string $uuid)
+    public function show(string $uuid): JsonResponse
     {
         try {
             return response()->json([
