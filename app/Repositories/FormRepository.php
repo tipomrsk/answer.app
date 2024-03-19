@@ -52,6 +52,13 @@ class FormRepository implements FormRepositoryInterface
         }
     }
 
+    /**
+     * Lista todos os formulários de um usuário
+     *
+     * @param string $user_uuid
+     * @return mixed
+     * @throws Exception
+     */
     public function listByUser(string $user_uuid)
     {
         try{
