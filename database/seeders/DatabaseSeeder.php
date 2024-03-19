@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         $form = Form::factory(5)->create();
 
         $form->each(function (Form $f) {
-            $question = Question::factory()->count(10)->create(['form_id' => $f->id]);
+            $question = Question::factory()->count(10)->create(['form_uuid' => $f->uuid]);
 
             $question->each(function (Question $q) use ($f) {
                 $hash_identifier = Uuid::uuid4();

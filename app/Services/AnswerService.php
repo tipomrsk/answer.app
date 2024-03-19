@@ -14,7 +14,8 @@ class AnswerService
     public function __construct(
         protected AnswerRepositoryInterface         $answerRepositoryInterface,
         protected UserRepositoryInterface           $userRepositoryInterface,
-        protected QuestionnaireRepositoryInterface  $questionnaireRepositoryInterface
+        protected QuestionnaireRepositoryInterface  $questionnaireRepositoryInterface,
+        protected UserService                       $userService
     ){}
 
 
@@ -29,6 +30,8 @@ class AnswerService
         try {
 
             $this->checkLimit($answerData->form_uuid);
+
+            $answeredQuestions = [];
 
             foreach ($answerData->answers as $answer) {
                 $massArray[] = [
@@ -108,10 +111,9 @@ class AnswerService
 
         $getLastQuestion = $this->questionnaireRepositoryInterface->getLastQuestion($form_uuid);
 
-        if (!in_array($getLastQuestion, $answeredQuestions)) {
-            return false;
-        }
-
+        // if $getLastQuestion existis inside $answeredQuestions, notify the user
+        if (in_array($getLastQuestion, $answeredQuestions))
+            $this->userRepositoryInterface->notifyUser($form_uuid);
 
     }
 }

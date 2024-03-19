@@ -25,7 +25,7 @@ class FormService
         try {
             $persistForm = $this->formRepositoryInterface->create($form);
 
-            $this->questionnaireService->createQuestionnaire($persistForm->id, $form->questionnaire);
+            $this->questionnaireService->createQuestionnaire($persistForm->uuid, $form->questionnaire);
 
             return response()->json([
                 'message' => 'Form created successfully',
@@ -51,7 +51,7 @@ class FormService
 
             $showForm = $this->formRepositoryInterface->show($uuid);
 
-            $showQuestionnaire = $this->questionnaireService->getById($showForm->id);
+            $showQuestionnaire = $this->questionnaireService->getByUuid($showForm->uuid);
 
             return response()->json([
                 'data' => [

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Notifications\FormFullyAnswered;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
@@ -112,6 +113,34 @@ class UserRepository implements UserRepositoryInterface
             Log::error($e->getMessage());
 
             throw new \Exception('User limit reached');
+        }
+    }
+
+    public function notifyUser(string $form_uuid)
+    {
+        $user = $this->getUserDataToNotify($form_uuid);
+
+        $user->notify(new FormFullyAnswered(
+            'Form fully answered',
+            'You have a new form fully answered',
+            "Nice Link!",
+            "https://www.youtube.com/watch?v=uH64qV71uUQ",
+            "Thank you for using our application"
+        ));
+    }
+
+    public function getUserDataToNotify(string $form_uuid)
+    {
+        try {
+            return $this->model->select('email')
+                ->join('forms', 'users.id', 'forms.user_id')
+                ->where('forms.uuid', $form_uuid)
+                ->firstOrFail();
+        }
+        catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            throw new \Exception('Error to get user data');
         }
     }
 

@@ -18,14 +18,14 @@ class QuestionnaireService
      * @return array
      * @throws \Exception
      */
-    public function createQuestionnaire($id, $questionnaire)
+    public function createQuestionnaire($uuid, $questionnaire)
     {
 
         try {
 
             foreach ($questionnaire as $question) {
                 $massArray[] = [
-                    'form_id' => $id,
+                    'form_uuid' => $uuid,
                     'question' => $question['question'],
                     'type' => $question['type'],
                     'options' => json_encode($question['options']),
@@ -44,12 +44,12 @@ class QuestionnaireService
     /**
      * Retorna as perguntas do formulário
      *
-     * @param int $id
+     * @param string $uuid
      * @return mixed
      */
-    public function getById(int $id)
+    public function getByUuid(string $uuid)
     {
-        return $this->questionnaireRepositoryInterface->getById($id);
+        return $this->questionnaireRepositoryInterface->getByUuid($uuid);
     }
 
 

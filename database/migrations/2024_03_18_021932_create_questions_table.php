@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id')->constrained();
+            $table->foreignUuid('form_uuid');
             $table->string('question');
             $table->string('type');
             $table->longText('options');

@@ -35,17 +35,16 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
     }
 
     /**
-     * Busca as perguntas pelo id do formulário
+     * Busca as perguntas pelo uuid do formulário
      *
-     * @param int $id
+     * @param string $uuid
      * @return mixed
      * @throws \Exception
      */
-    public function getById(int $id)
+    public function getByUuid(string $uuid)
     {
         try {
-            return $this->model->select('id', 'form_id', 'question', 'type', 'options')->where('form_id', $id)->get();
-
+            return $this->model->select('id', 'form_id', 'question', 'type', 'options')->where('form_uuid', $uuid)->get();
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
@@ -56,7 +55,7 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
     public function getLastQuestion(string $form_uuid)
     {
         try {
-            return $this->model->select('id')->where('form_id', $form_uuid)->max('id');
+            return $this->model->select('id')->where('form_uuid', $form_uuid)->max('id');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
 
