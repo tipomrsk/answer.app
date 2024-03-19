@@ -1,4 +1,7 @@
 <?php
+
+use App\Models\User;
+
 beforeEach(function () {
     $this->answer = [
         "hash_identifier" => "b7ac1920-384f-4531-8265-b2b564e1fbcf",
@@ -49,6 +52,9 @@ beforeEach(function () {
 });
 
 it('should return 201 when try to create an answer', function () {
+
+    User::where('id', 3)->update(['count_limit' => 90]);
+
     $this->postJson('/api/answer/create', $this->answer)
         ->assertStatus(201)
         ->assertJsonStructure([
@@ -70,3 +76,22 @@ it('should return 422 when try to create an answer with invalid form_uuid', func
         ])
         ->assertJsonCount(1);
 });
+
+it('should return 400 when try to creante an answer because user has reached the limit', function () {
+
+    User::where('id', 3)->update(['count_limit' => 100]);
+
+    $this->postJson('/api/answer/create', $this->answer)
+        ->assertStatus(400)
+        ->assertJson([
+            "message"=> "User limit reached"
+        ])
+        ->assertJsonStructure([
+            'message',
+        ])
+        ->assertJsonCount(1);
+});
+
+
+
+
