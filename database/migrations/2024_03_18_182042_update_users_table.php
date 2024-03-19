@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users' , function (Blueprint $table) {
             $table->uuid()->after('id');
             $table->integer('range_limit')->after('email_verified_at')->default('100');
-            $table->string('responses_count')->after('range_limit')->default('0');
+            $table->integer('count_limit')->after('range_limit')->default('0');
         });
     }
 

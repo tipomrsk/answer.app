@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use App\Repositories\{AnswerRepository, FormRepository, QuestionRepository};
-use App\Repositories\Interfaces\{AnswerRepositoryInterface, FormRepositoryInterface, QuestionnaireRepositoryInterface};
+use App\Repositories\{AnswerRepository, FormRepository, QuestionRepository, UserRepository};
+use App\Repositories\Interfaces\{AnswerRepositoryInterface,
+    FormRepositoryInterface,
+    QuestionnaireRepositoryInterface,
+    UserRepositoryInterface};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AnswerRepositoryInterface::class,
             AnswerRepository::class
+        );
+
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
     }
 

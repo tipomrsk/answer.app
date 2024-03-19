@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AnswerController, FormController};
+use App\Http\Controllers\{AnswerController, FormController, UserController};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +20,11 @@ Route::prefix('/form')->group(function () {
 Route::prefix('/answer')->group(function () {
     Route::post('/create', [AnswerController::class, 'create']);
     Route::get('/list-by-form/{formUuid}', [AnswerController::class, 'show']);
+});
+
+Route::prefix('user')->group(function () {
+    Route::post('/create', [UserController::class, 'create']);
+    Route::post('/show', [UserController::class, 'show']);
 });
 
 
