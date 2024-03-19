@@ -16,4 +16,9 @@ class UserController extends Controller
     {
         return $this->userService->create($userData);
     }
+
+    public function show(string $uuid)
+    {
+        return $this->userService->show($uuid);
+    }
 }

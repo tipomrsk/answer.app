@@ -24,7 +24,7 @@ Route::prefix('/answer')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::post('/create', [UserController::class, 'create']);
-    Route::post('/show', [UserController::class, 'show']);
+    Route::get('/show/{uuid}', [UserController::class, 'show']);
 });
 
 
