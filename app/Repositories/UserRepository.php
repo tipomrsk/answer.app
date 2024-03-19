@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Jobs\SendEmailJob;
 use App\Models\User;
 use App\Notifications\FormFullyAnswered;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -118,15 +119,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function notifyUser(string $form_uuid)
     {
-        $user = $this->getUserDataToNotify($form_uuid);
-
-        $user->notify(new FormFullyAnswered(
-            'Form fully answered',
-            'You have a new form fully answered',
-            "Nice Link!",
-            "https://www.youtube.com/watch?v=uH64qV71uUQ",
-            "Thank you for using our application"
-        ));
+        SendEmailJob::dispatch($this->getUserDataToNotify($form_uuid)->email);
     }
 
     public function getUserDataToNotify(string $form_uuid)

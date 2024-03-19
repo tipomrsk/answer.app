@@ -15,20 +15,22 @@ class FormFullyAnswered extends Notification
     private $body;
     private $actionText;
     private $actionUrl;
-
     private $lastLine;
+
+    private $email;
 
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($greeting, $body, $actionText, $actionUrl, $lastLine)
+    public function __construct($greeting, $body, $actionText, $actionUrl, $lastLine, $email)
     {
         $this->greeting = $greeting;
         $this->body = $body;
         $this->actionText = $actionText;
         $this->actionUrl = $actionUrl;
         $this->lastLine = $lastLine;
+        $this->email = $email;
     }
 
 
@@ -51,7 +53,9 @@ class FormFullyAnswered extends Notification
                     ->greeting($this->greeting)
                     ->line($this->body)
                     ->action($this->actionText, url($this->actionUrl))
-                    ->line($this->lastLine);
+                    ->line($this->lastLine)
+            ->replyTo($this->email);
+
     }
 
     /**
