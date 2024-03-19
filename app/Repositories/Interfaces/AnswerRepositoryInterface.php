@@ -8,4 +8,6 @@ interface AnswerRepositoryInterface
 
     public function show(string $formUuid);
 
+    public function getAnswersAndQuestions(string $hash_identifier);
+
 }

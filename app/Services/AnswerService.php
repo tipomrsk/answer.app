@@ -48,7 +48,7 @@ class AnswerService
 
             $this->answerRepositoryInterface->create($massArray);
 
-            $this->checkLastAnswerAndNotify($answerData->form_uuid, $answeredQuestions);
+            $this->checkLastAnswerAndNotify($answerData->form_uuid, $answeredQuestions, $answerData->hash_identifier);
 
             return response()->json([
                 'message' => 'Answer created successfully'
@@ -106,14 +106,23 @@ class AnswerService
         }
     }
 
-    private function checkLastAnswerAndNotify(string $form_uuid, array $answeredQuestions)
+    private function checkLastAnswerAndNotify(string $form_uuid, array $answeredQuestions, string $hash_identifier)
     {
-
         $getLastQuestion = $this->questionnaireRepositoryInterface->getLastQuestion($form_uuid);
 
         // if $getLastQuestion existis inside $answeredQuestions, notify the user
         if (in_array($getLastQuestion, $answeredQuestions))
-            $this->userRepositoryInterface->notifyUser($form_uuid);
+            $this->userRepositoryInterface->notifyUser($form_uuid, $this->getAnswersAndQuestions($hash_identifier));
 
     }
+
+    private function getAnswersAndQuestions(string $hash_identifier)
+    {
+        return [
+            "message" => "New Form fully answered" ,
+            "answers-and-questions" => $this->answerRepositoryInterface->getAnswersAndQuestions($hash_identifier)
+        ];
+    }
+
+
 }

@@ -83,4 +83,27 @@ class AnswerRepository implements AnswerRepositoryInterface
             throw new \Exception('Error to get answers');
         }
     }
+
+
+    /**
+     * Retorna todas as perguntas e respostas pelo hash_identifier
+     *
+     * @param string $hash_identifier
+     * @return array
+     */
+    public function getAnswersAndQuestions(string $hash_identifier): array
+    {
+        try {
+            return $this->model->select('questions.question', 'questions.type', 'questions.options', 'answers.answer')
+                ->join('questions', 'answers.question_id', 'questions.id')
+                ->where('answers.hash_identifier', $hash_identifier)
+                ->get()
+                ->toArray();
+
+        }catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return [];
+        }
+    }
 }

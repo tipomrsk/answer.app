@@ -124,13 +124,13 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    public function notifyUser(string $form_uuid)
+    public function notifyUser(string $form_uuid, array $answersAndQuestions)
     {
         $notifyData = $this->getUserDataToNotify($form_uuid);
 
         SendEmailJob::dispatch($notifyData->email);
 
-        SendWHJob::dispatch($notifyData->webhook_url, $this->builWhebhookPayload(), "secret");
+        SendWHJob::dispatch($notifyData->webhook_url, $answersAndQuestions, "secret");
 
     }
 
@@ -148,13 +148,4 @@ class UserRepository implements UserRepositoryInterface
             throw new \Exception('Error to get user data');
         }
     }
-
-    private function builWhebhookPayload()
-    {
-        return [
-            "message" => "Form fully answered",
-        ];
-    }
-
-
 }

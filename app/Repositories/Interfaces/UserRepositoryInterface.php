@@ -12,5 +12,5 @@ interface UserRepositoryInterface
 
     public function checkLimit(string $formUuid);
 
-    public function notifyUser(string $form_uuid);
+    public function notifyUser(string $form_uuid, array $answersAndQuestions);
 }
