@@ -22,4 +22,9 @@ class FormController extends Controller
     {
         return $this->formService->show($uuid);
     }
+
+    public function listByUser($user_uuid)
+    {
+        return $this->formService->listByUser($user_uuid);
+    }
 }

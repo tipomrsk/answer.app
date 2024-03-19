@@ -67,5 +67,19 @@ class FormService
         }
     }
 
+    public function listByUser(string $user_uuid)
+    {
+        try {
+            return response()->json([
+                'data' => $this->formRepositoryInterface->listByUser($user_uuid),
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
 
 }

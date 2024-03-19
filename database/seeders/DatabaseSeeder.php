@@ -19,11 +19,18 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(2)->create();
 
+        User::factory(1)->create([
+            'email' => 'teste@teste.com',
+            'range_limit' => 100,
+            'count_limit' => 98
+        ]);
+
         Form::factory(1)->create([
             'name' => 'Form 1',
             'description' => 'Form 1 description',
             'style' => '{}',
-            'uuid' => 'd3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e'
+            'uuid' => 'd3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e',
+            'user_id' => 3
         ]);
 
         Question::factory(10)->create([

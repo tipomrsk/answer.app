@@ -15,6 +15,7 @@ Route::get('/test', function () {
 Route::prefix('/form')->group(function () {
     Route::post('/create', [FormController::class, 'create']);
     Route::get('/show/{uuid}', [FormController::class, 'show']);
+    Route::get('/list-by-user/{user_uuid}', [FormController::class, 'listByUser']);
 });
 
 Route::prefix('/answer')->group(function () {
