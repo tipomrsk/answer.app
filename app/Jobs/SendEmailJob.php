@@ -2,19 +2,20 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
-use App\Notifications\FormFullyAnswered;
+use App\Mail\FormFullyAnsweredMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $email;
+
     /**
      * Create a new job instance.
      */
@@ -28,13 +29,6 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        (new FormFullyAnswered(
-            'Form fully answered',
-            'You have a new form fully answered',
-            "Nice Link!",
-            "https://www.youtube.com/watch?v=uH64qV71uUQ",
-            "Thank you for using our application",
-            $this->email
-        ))->notify();
+        Mail::to($this->email)->send(new FormFullyAnsweredMail());
     }
 }

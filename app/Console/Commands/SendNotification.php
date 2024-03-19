@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use App\Notifications\FormFullyAnswered;
 use Illuminate\Console\Command;
+use Spatie\WebhookServer\WebhookCall;
 
 class SendNotification extends Command
 {
@@ -27,14 +28,10 @@ class SendNotification extends Command
      */
     public function handle()
     {
-        User::all()->each->notify(
-            new FormFullyAnswered(
-                'Hello!',
-                'Your form has been fully answered',
-                'View Form',
-                'https://www.youtube.com/watch?v=uH64qV71uUQ',
-                'Thank you for using our application'
-            )
-        );
+        WebhookCall::create()
+            ->url('https://webhook.site/47a7edd1-8fbb-4620-b8ee-843260e43976')
+            ->payload(['key' => 'value'])
+            ->useSecret('sign-using-this-secret')
+            ->dispatch();
     }
 }
