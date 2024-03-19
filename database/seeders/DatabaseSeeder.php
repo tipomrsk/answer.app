@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
         User::factory(1)->create([
             'email' => 'teste@teste.com',
             'range_limit' => 100,
-            'count_limit' => 98
+            'count_limit' => 98,
+            'uuid' => 'k2k2k2k2-2k2k-2k2k-2k2k-2k2k2k2k2k2k',
         ]);
 
         Form::factory(1)->create([
