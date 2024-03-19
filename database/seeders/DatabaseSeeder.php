@@ -19,6 +19,13 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(2)->create();
 
+        Form::factory(1)->create([
+            'name' => 'Form 1',
+            'description' => 'Form 1 description',
+            'style' => '{}',
+            'uuid' => 'd3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e'
+        ]);
+
         $form = Form::factory(5)->create();
 
         $form->each(function (Form $f) {
