@@ -26,6 +26,10 @@ class DatabaseSeeder extends Seeder
             'uuid' => 'd3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e'
         ]);
 
+        Question::factory(10)->create([
+            'form_uuid' => 'd3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e'
+        ]);
+
         $form = Form::factory(5)->create();
 
         $form->each(function (Form $f) {

@@ -42,7 +42,7 @@ class FormRepository implements FormRepositoryInterface
     public function show(string $uuid)
     {
         try {
-            return $this->model->select('id', 'uuid', 'name', 'description', 'style')->where('uuid', $uuid)->firstOrFail();
+            return $this->model->select('id', 'uuid', 'name', 'description', 'style', 'webhook_url')->where('uuid', $uuid)->firstOrFail();
 
         } catch (Exception $e) {
             Log::error($e->getMessage());
