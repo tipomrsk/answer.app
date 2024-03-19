@@ -1,7 +1,4 @@
 <?php
-
-//define a variável $form antes de executar o teste
-
 beforeEach(function () {
     $this->form = [
         "name" => "Teste",
@@ -83,4 +80,41 @@ it('should return 400 when try to creat a form and back return with an error', f
         ->assertJsonCount(1);
 });
 
+
+it('should return 200 when try to show a form', function () {
+
+    $this->get('/api/form/show/d3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e')
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                'form' => [
+                    'id',
+                    'uuid',
+                    'name',
+                    'description',
+                    'style',
+                    'webhook_url'
+                ],
+                'questionnaire' => [
+                    '*' => [
+                        'id',
+                        'question',
+                        'type',
+                        'options'
+                    ]
+                ]
+            ]
+        ])
+        ->assertJsonCount(1);
+});
+
+it('should return 400 when try to show a form and back return with an error', function () {
+
+    $this->get('/api/form/show/invalid')
+        ->assertStatus(400)
+        ->assertJsonStructure([
+            'message'
+        ])
+        ->assertJsonCount(1);
+});
 
