@@ -14,12 +14,12 @@ class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $email;
+    private string $email;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($email)
+    public function __construct(string $email)
     {
         $this->email = $email;
     }

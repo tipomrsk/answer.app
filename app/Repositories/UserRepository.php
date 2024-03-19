@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Jobs\SendEmailJob;
+use App\Jobs\SendWHJob;
 use App\Models\User;
 use App\Notifications\FormFullyAnswered;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -119,13 +120,18 @@ class UserRepository implements UserRepositoryInterface
 
     public function notifyUser(string $form_uuid)
     {
-        SendEmailJob::dispatch($this->getUserDataToNotify($form_uuid)->email);
+        $notifyData = $this->getUserDataToNotify($form_uuid);
+
+        SendEmailJob::dispatch($notifyData->email);
+
+        SendWHJob::dispatch($notifyData->webhook_url, $this->builWhebhookPayload(), "secret");
+
     }
 
     public function getUserDataToNotify(string $form_uuid)
     {
         try {
-            return $this->model->select('email')
+            return $this->model->select('email', 'webhook_url')
                 ->join('forms', 'users.id', 'forms.user_id')
                 ->where('forms.uuid', $form_uuid)
                 ->firstOrFail();
@@ -135,6 +141,13 @@ class UserRepository implements UserRepositoryInterface
 
             throw new \Exception('Error to get user data');
         }
+    }
+
+    private function builWhebhookPayload()
+    {
+        return [
+            "message" => "Form fully answered",
+        ];
     }
 
 

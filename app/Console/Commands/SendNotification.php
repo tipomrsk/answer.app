@@ -28,10 +28,6 @@ class SendNotification extends Command
      */
     public function handle()
     {
-        WebhookCall::create()
-            ->url('https://webhook.site/47a7edd1-8fbb-4620-b8ee-843260e43976')
-            ->payload(['key' => 'value'])
-            ->useSecret('sign-using-this-secret')
-            ->dispatch();
+
     }
 }
