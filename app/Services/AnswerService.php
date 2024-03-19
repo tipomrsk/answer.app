@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\AnswerRepositoryInterface;
+use App\Repositories\Interfaces\QuestionnaireRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -11,8 +12,9 @@ class AnswerService
 {
 
     public function __construct(
-        protected AnswerRepositoryInterface $answerRepositoryInterface,
-        protected UserRepositoryInterface   $userRepositoryInterface
+        protected AnswerRepositoryInterface         $answerRepositoryInterface,
+        protected UserRepositoryInterface           $userRepositoryInterface,
+        protected QuestionnaireRepositoryInterface  $questionnaireRepositoryInterface
     ){}
 
 
@@ -37,9 +39,13 @@ class AnswerService
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ];
+
+                $answeredQuestions[] = $answer['question_id'];
             }
 
             $this->answerRepositoryInterface->create($massArray);
+
+            $this->checkLastAnswerAndNotify($answerData->form_uuid, $answeredQuestions);
 
             return response()->json([
                 'message' => 'Answer created successfully'
@@ -95,5 +101,17 @@ class AnswerService
         catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+    }
+
+    private function checkLastAnswerAndNotify(string $form_uuid, array $answeredQuestions)
+    {
+
+        $getLastQuestion = $this->questionnaireRepositoryInterface->getLastQuestion($form_uuid);
+
+        if (!in_array($getLastQuestion, $answeredQuestions)) {
+            return false;
+        }
+
+
     }
 }

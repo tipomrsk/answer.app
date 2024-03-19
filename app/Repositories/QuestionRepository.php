@@ -52,4 +52,15 @@ class QuestionRepository implements QuestionnaireRepositoryInterface
             throw new \Exception('Error to get questionnaire');
         }
     }
+
+    public function getLastQuestion(string $form_uuid)
+    {
+        try {
+            return $this->model->select('id')->where('form_id', $form_uuid)->max('id');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            throw new \Exception('Error to get questionnaire');
+        }
+    }
 }
