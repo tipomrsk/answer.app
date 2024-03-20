@@ -1,0 +1,108 @@
+version: "3.7"
+
+volumes:
+  app:
+
+services:
+  # API
+  app:
+    image: app
+    restart: always
+    container_name: app
+    working_dir: /var/www
+    command: bash ./init.sh
+    hostname: sandbox.answer.app
+    build:
+      context: ../app
+      dockerfile: Dockerfile
+    volumes:
+      - ../app:/var/www
+    networks:
+      - answers-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # Nginx
+  nginx:
+    restart: always
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ../nginx/config/conf.d:/etc/nginx/conf.d
+      - ../nginx/config/nginx.conf:/etc/nginx/nginx.conf
+      - ../app:/var/www
+    depends_on:
+      - app
+    ports:
+      - 80:80
+    networks:
+      - answers-network
+
+  # MySQL
+  mysql:
+    image: mysql
+    restart: always
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: answer.app
+    ports:
+      - 3306:3306
+    networks:
+      - answers-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  # Redis Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    restart: always
+    networks:
+      - answers-network
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7.2.4
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - answers-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+
+  app-queue-worker:
+    image: app
+    container_name: app-queue-worker
+    tty: true
+    environment:
+      SERVICE_NAME: app-queue-worker
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ../app:/var/www
+    networks:
+      - answers-network
+    command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+    restart: always
+    depends_on:
+      - mysql
+      - app
+      - redis
+
+networks:
+  answers-network:
+    name: answers-network
+    driver: bridge
