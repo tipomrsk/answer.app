@@ -262,7 +262,7 @@ Mas na AWS, por exemplo, é possível fazer um "lock" de acesso por sessão em u
 ## [Seedando o Banco]()
 Eu tava testando algumas coisas pra seedar o banco com mais e mais dados de maineira performática, aí pra fazer isso e não poluir o seed em sí eu criei um comando (que fica mais fácil de debugar também) que é o `php artisand sid` (Sim, o Sid da Era do Gelo kkkk'), fazendo meus testes aqui eu consegui sidar (rsrsrs) 200 forms, 1 question por form, e 10k de respostas por form (Que no montante da 2M de respostas), em menos de 1 minuto. Então acho que ta bacana. 
 
-É um seed em lote, que o lote ta limitado em 1000, não fiz alteração nenhuma nas configurações padrões do PHP. Então se você quiser testar, pode ser que você tenha que aumentar o limite de memória do PHP, ou o tempo de execução de um script, ou até mesmo o limite de execução de um script. Fica a vontade pra ir testando, esse comando ta bem comentado e é bem simples de entender.
+É um seed em lote, que ta limitado em 1000 objetos, não fiz alteração nenhuma nas configurações padrões do PHP. Então se você quiser testar mais coisa, elevar mais o limite, pode ser que você tenha que aumentar a memória do PHP, ou até mesmo o tempo de execução de scripts. Fica a vontade pra ir testando, esse comando ta bem comentado e é bem simples de entender.
 
 
 ## [Rodando os testes]()
