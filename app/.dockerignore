@@ -1,0 +1,7 @@
+/.idea
+/vendor
+Dockerfile
+Homestead.json
+Homestead.yaml
+Dockerfile.sandbox
+.phpunit.result.cache
