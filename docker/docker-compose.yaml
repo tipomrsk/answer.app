@@ -41,7 +41,7 @@ services:
 
   # MySQL
   mysql:
-    image: mysql
+    image: mysql:8.3.0
     restart: always
     container_name: mysql
     environment:
