@@ -72,10 +72,6 @@ class AnswerService
         try {
             $showAnswer = $this->answerRepositoryInterface->show($formUuid);
 
-            if ($showAnswer['status'] != 1) {
-                throw new \Exception($showAnswer['message']);
-            }
-
             return response()->json([
                 'data' => $showAnswer['data'],
             ], Response::HTTP_OK);

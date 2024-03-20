@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory(2)->create();
 
         User::factory(1)->create([
+            'name' => 'Teste',
             'email' => 'teste@teste.com',
             'range_limit' => 100,
             'count_limit' => 98,

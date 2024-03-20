@@ -64,7 +64,6 @@ class AnswerRepository implements AnswerRepositoryInterface
 
             foreach ($showAnswer as $answer) {
                 $returnArray[$answer['hash_identifier']]["Question {$answer['question_number']}"][] = [
-                    'question_number' => $answer['question_number'],
                     'question' => $answer['question'],
                     'type' => $answer['type'],
                     'options' => $answer['options'],
