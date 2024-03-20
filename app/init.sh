@@ -21,15 +21,12 @@ echo "-------- PHP ARTISAN ---------"
 echo "------------------------------"
 
 php artisan storage:link
-php artisan migrate:fresh --seed
-php artisan sid
+#php artisan migrate:fresh --seed
 
 echo "------------------------------"
 echo "------ FIM PHP ARTISAN -------"
 echo "------------------------------"
 
 # Inicia o PHP-FPM
-php-fpm -D
-
-php artisan queue:work
+php-fpm && php artisan queue:work
 

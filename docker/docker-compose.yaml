@@ -1,7 +1,5 @@
 version: "3.7"
 
-# version 1.19.0 or higher
-
 volumes:
   app:
 
@@ -19,6 +17,8 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ../app:/var/www
+    networks:
+      - answers-network
     depends_on:
       mysql:
         condition: service_healthy
@@ -36,6 +36,8 @@ services:
       - app
     ports:
       - 80:80
+    networks:
+      - answers-network
 
   # MySQL
   mysql:
@@ -47,6 +49,8 @@ services:
       MYSQL_DATABASE: answer.app
     ports:
       - 3306:3306
+    networks:
+      - answers-network
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
@@ -61,10 +65,10 @@ services:
     environment:
       - REDIS_HOSTS=local:redis:6379
     restart: always
+    networks:
+      - answers-network
     depends_on:
       - redis
-
-
 
   redis:
     image: redis:7.2.4
@@ -72,6 +76,31 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    networks:
+      - answers-network
     depends_on:
       mysql:
         condition: service_healthy
+
+
+  app-queue-worker:
+    image: app
+    container_name: app-queue-worker
+    tty: true
+    environment:
+      SERVICE_NAME: app-queue-worker
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ../app:/var/www
+    networks:
+      - answers-network
+    command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
+    restart: always
+    depends_on:
+      - app
+
+networks:
+  answers-network:
+    name: answers-network
+    driver: bridge
