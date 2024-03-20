@@ -110,6 +110,3 @@ it('should return 400 when try to show an answer with invalid uuid', function ()
         ])
         ->assertJsonCount(1);
 });
-
-
-
