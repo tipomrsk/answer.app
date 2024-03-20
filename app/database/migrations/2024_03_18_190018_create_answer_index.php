@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('answers', function (Blueprint $table) {
             $table->index('hash_identifier');
+            $table->index('form_uuid');
         });
     }
 

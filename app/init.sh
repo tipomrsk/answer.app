@@ -21,7 +21,8 @@ echo "-------- PHP ARTISAN ---------"
 echo "------------------------------"
 
 php artisan storage:link
-#php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed
+php artisan sid
 
 echo "------------------------------"
 echo "------ FIM PHP ARTISAN -------"

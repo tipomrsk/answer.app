@@ -98,7 +98,9 @@ services:
     command: php artisan queue:work --queue=default --sleep=3 --tries=3 --max-time=3600
     restart: always
     depends_on:
+      - mysql
       - app
+      - redis
 
 networks:
   answers-network:
