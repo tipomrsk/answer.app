@@ -12,6 +12,18 @@ Esses foram os pacotes Instalados a mais fora o próprio Laravel.
 - [Predis](https://github.com/predis/predis)
 - [Pest](https://pestphp.com/)
 
+## [Outras tecnologias]()
+
+Tem duas coisas aqui um pouco mais específicas que utilizei nesse projeto para a dockerização que são:
+
+[PHP-FPM]() - O PHP-FPM é um gerenciador de processos FastCGI para PHP. Ele é uma alternativa ao PHP mod, que é um módulo do Apache. O PHP-FPM é mais rápido e mais flexível.
+
+[OpCache]() - O OpCache é um sistema de cache do fonte do PHP. Ele armazena o fonte compilado em memória, o que permite que o PHP execute mais rapidamente.
+
+> É importante salientar que eles já estão configurados e ativos na dockerização. Se não for utilizar o docker, você pode instalar e configurar manualmente. 
+> 
+> Mas como os aquivos já estão aqui, configurar fica mais fácil. :D
+
 
 ## [Que mais?]()
 
@@ -24,6 +36,8 @@ Mais coisas sobre a aplicação:
 6. Para o disparo de email, como é só testes utilizei o [MailTrap](https://mailtrap.io/).
 7. Todos os usuários tem um limite de respostas por formulário que é agrupado pelo hash_identifier.
 8. Esse contador de respostas é zerado mensalmente.
+
+
 ## [Documentação da API]()
 
 Além da Collection do Postman e do Pest, tem aqui também essa documentação da API mais simples.
