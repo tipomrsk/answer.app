@@ -81,7 +81,7 @@ class Sid extends Command
                 $data[] = [
                         'question_id' => $this->questionId,
                         'form_uuid' => $this->formUuid,
-                        'hash_identifier' => '88888888-3e3e-3e3e-3e3e-111111111111',
+                        'hash_identifier' => '88888888-3e3e-3e3e-3e3e-111111111111', //Uuid::uuid4()->toString(),
                         'answer' => 'Answer ' . ($i + 1)
                     ] + $timestamp;
 
