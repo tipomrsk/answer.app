@@ -30,5 +30,5 @@ echo "------ FIM PHP ARTISAN -------"
 echo "------------------------------"
 
 # Inicia o PHP-FPM
-php-fpm && php artisan queue:work
+php-fpm
 
