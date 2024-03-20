@@ -13,11 +13,24 @@ Esses foram os pacotes Instalados a mais fora o próprio Laravel.
 - [Pest](https://pestphp.com/)
 
 
+## [Que mais?]()
+
+Mais coisas sobre a aplicação:
+1. É disparado um webhook e email quando um formulário é completamente respondido.
+2. Usei Redis para gerenciar a fila, nada mais que isso.
+3. Tem uma leve aplicação de DTO com o Laravel-Data.
+4. É utilizado Service Repository pattern para separa as responsabilidades em camadas, fica mais fácil de ler, dar manutenção...
+5. Aproveitei e apliquei uma interface entre a Service e a Repository para facilitar futuras modificações e refatorações.
+6. Para o disparo de email, como é só testes utilizei o [MailTrap](https://mailtrap.io/).
+7. Todos os usuários tem um limite de respostas por formulário que é agrupado pelo hash_identifier.
+8. Esse contador de respostas é zerado mensalmente.
 ## [Documentação da API]()
 
 Além da Collection do Postman e do Pest, tem aqui também essa documentação da API mais simples.
 
-### Formulário
+### 📒 Formulário
+
+#### [Cria um novo formulário]()
 
 ```http
   POST /api/form/create
@@ -64,7 +77,188 @@ Além da Collection do Postman e do Pest, tem aqui também essa documentação d
  ]
 ```
 
+#### [Retorna o formulário e quais as perguntas do mesmo]()
 
+```http
+  GET /api/form/show/{{FORM-UUID}}
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `form_uuid` | `string` | UUID do formulário |
+
+> O UUID do formulário é retornado no `/api/form/create`
+
+#### [Retorna todos os formulários criados pelo usuário SEM as perguntas]()
+
+```http
+  GET /api/form/list-by-user/{{USER-UUID}}
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `user_uuid` | `string` | UUID do usuário |
+
+> O UUID do usuário é retornado no `/api/user/create`
+
+### 🖊️ Respostas
+
+#### [Cria uma nova resposta]()
+
+```http
+  POST /api/answer/create
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `hash_identifier` | `string` | Hash identificador para identificar quem está preenchendo |
+| `form_uuid` | `string` | UUID do formulário |
+| `answers` | `array` | Array de objetos que são as respostas |
+| `answers.question_id` | `int` | ID da resposta que está sendo respondida |
+| `answers.answer` | `string` | Qual a resposta |
+
+> É esperado dentro do item `answers` um array de objetos que são as respostas.
+O question_id é retornado no `/api/form/show`
+```json
+     "answers": [
+        {
+            "question_id": 133,
+            "answer": "Mateus Bougleux"
+        },
+        {
+            "question_id": 134,
+            "answer": "29/09/1997"
+        },
+        {
+            "question_id": 135,
+            "answer": "Laranja, Manga"
+        },
+        {
+            "question_id": 136,
+            "answer": "Cabeda"
+        }
+    ]
+```
+#### [Retorna todas as respostas aplicadas a um formulário]()
+
+```http
+  GET /api/answer/show/{{FORM-UUID}}
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `form_uuid` | `string` | UUID do usuário |
+
+
+> O retorno desse endpoint é agrupado pelo hash_identifier e ordenado pelo ID da questão.
+
+```json
+{
+    "data":{
+        "{{SOME-UUID}}":{
+            "Question 1": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            "Question 2": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            "Question 3": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            // Todas as outras perguntas e respostas
+        },
+        "{{SOME-UUID}}": {
+                        "Question 1": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            "Question 2": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            "Question 3": [
+                {
+                    "question": "...",
+                    "type": "...",
+                    "options": "...",
+                    "answer": "...."
+                },
+            ],
+            // Todas as outras perguntas e respostas
+        }
+        // Todas as outras hashs seguindo o mesmo padrão...
+    }
+}
+```
+
+### 🖊️ Usuário
+
+#### [Cria um novo usuário]()
+
+```http
+  POST /api/user/create
+```
+
+| Parâmetro   | Tipo       | Descrição                           |
+| :---------- | :--------- | :---------------------------------- |
+| `nmame` | `string` | Nome do Usuário |
+| `email` | `string` | Email do Usuário |
+| `password` | `string` | Senha de acesso, mínimo 8 caracteres |
+| `range_limit` | `int` | Limite de respostas que esse usuário pode ter por formulário |
+
+#### [Busca os dados do usuário]()
+
+```http
+  POST /api/user/show/{{USER-UUID}}
+```
+
+> O UUID é retornado no endpoint `api/user/create`
+
+
+### [Sobre o hash_identifier]()
+
+Eu pensei nesse cara como algo que o front vai criar/gerenciar, pode ser um cookie ou algo assim. Como quem responde não precisa estar logado e é importante agrupar as respotas para futuras análises de dado, imaginei algo em que o front seja responsável por gerar. Não precisa ser também um UUID, pode ser outro hash qualquer porque o campo não está tipado para ser um UUID.
+
+**Ah Mateus, mas e usar uma sessão do lado do back?** Até daria, mas aí ficamos relativamente travados se quisermos utilizar alguma solução de Load Balancers.
+Mas na AWS, por exemplo, é possível fazer um "lock" de acesso por sessão em uma mesma máquina, então para LB tem saída, mas não sendo uma solução 100% aproeitável.
+
+## [Seedando o Banco]()
+Eu tava testando algumas coisas pra seedar o banco com mais e mais dados de maineira performática, aí pra fazer isso e não poluir o seed em sí eu criei um comando (que fica mais fácil de debugar também) que é o `php artisand sid` (Sim, o Sid da Era do Gelo kkkk'), fazendo meus testes aqui eu consegui sidar (rsrsrs) 200 forms, 1 question por form, e 10k de respostas por form (Que no montante da 2M de respostas), em menos de 1 minuto. Então acho que ta bacana. 
+
+É um seed em lote, que o lote ta limitado em 1000, não fiz alteração nenhuma nas configurações padrões do PHP. Então se você quiser testar, pode ser que você tenha que aumentar o limite de memória do PHP, ou o tempo de execução de um script, ou até mesmo o limite de execução de um script. Fica a vontade pra ir testando, esse comando ta bem comentado e é bem simples de entender.
+
+
+## [Rodando os testes]()
+
+Para rodar os testes, rode o seguinte comando.
+Testes criados com [Pest](https://pestphp.com/). Rode os **seeders** antes dos testes.
+
+```bash
+  ./vendor/bin/pest
+```
 
 
 ## 🚀 Sobre mim
