@@ -92,6 +92,24 @@ it('should return 400 when try to creante an answer because user has reached the
         ->assertJsonCount(1);
 });
 
+it('should return 200 when try to show an answer', function () {
+    $this->get('/api/answer/list-by-form/d3e3e3e3-3e3e-3e3e-3e3e-3e3e3e3e3e3e')
+        ->assertStatus(200)
+        ->assertJsonCount(1);
+});
+
+
+it('should return 400 when try to show an answer with invalid uuid', function () {
+    $this->get('/api/answer/list-by-form/invalid')
+        ->assertStatus(400)
+        ->assertJson([
+            "message"=> "Error to get answers"
+        ])
+        ->assertJsonStructure([
+            'message',
+        ])
+        ->assertJsonCount(1);
+});
 
 
 

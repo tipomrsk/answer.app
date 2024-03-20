@@ -104,3 +104,30 @@ it('shloud return 422 when try to create a user with an invalid password', funct
         ])
         ->assertJsonCount(2);
 });
+
+it('should return 200 when try to get a user by uuid', function () {
+
+    $this->get("/api/user/show/k2k2k2k2-2k2k-2k2k-2k2k-2k2k2k2k2k2k")
+        ->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                'name',
+                'email',
+                'range_limit',
+                'count_limit',
+            ]
+        ])
+        ->assertJsonCount(1);
+});
+
+it('should return 400 when try to get a user by uuid and return an error', function () {
+    $this->get("/api/user/show/invalid")
+        ->assertStatus(400)
+        ->assertJson([
+            "message"=> "User not found"
+        ])
+        ->assertJsonStructure([
+            'message',
+        ])
+        ->assertJsonCount(1);
+});
