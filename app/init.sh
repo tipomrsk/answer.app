@@ -20,6 +20,7 @@ echo "------------------------------"
 echo "-------- PHP ARTISAN ---------"
 echo "------------------------------"
 
+php artisan key:generate
 php artisan storage:link
 php artisan migrate:fresh --seed
 php artisan sid
